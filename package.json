@@ -1,17 +1,24 @@
 {
-  "name": "presight-execise",
+  "name": "presight-people-directory",
   "version": "1.0.0",
-  "repository": "",
-  "author": "",
+  "private": true,
   "license": "MIT",
-  "workspaces": [
-    "client",
-    "server"
-  ],
+  "description": "Full-stack people directory — React client, Fastify API, SQLite source of truth.",
+  "engines": { "node": ">=22.5.0" },
   "scripts": {
-    "start": "lerna run start"
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "db:seed": "npm --prefix server run db:seed",
+    "db:reset": "npm --prefix server run db:reset",
+    "dev": "concurrently -n api,web -c cyan,magenta \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "build": "npm --prefix server run build && npm --prefix client run build",
+    "test": "npm --prefix server test",
+    "typecheck": "npm --prefix server run typecheck && npm --prefix client run typecheck",
+    "docker:up": "docker compose up --build",
+    "docker:down": "docker compose down -v"
   },
   "devDependencies": {
-    "lerna": "~8.2.1"
+    "concurrently": "~9.1.2"
   }
 }
