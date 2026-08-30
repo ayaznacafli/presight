@@ -1,0 +1,136 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Design tokens.
+
+   Every component styles itself from these semantic names rather than raw
+   palette values, so a theme change (or an imported design system) is a swap
+   of this block alone.
+   --------------------------------------------------------------------------- */
+:root {
+  --canvas: oklch(97.5% 0.005 264);
+  --surface: oklch(100% 0 0);
+  --surface-raised: oklch(100% 0 0);
+  --surface-muted: oklch(96.5% 0.006 264);
+  --border: oklch(91% 0.008 264);
+  --border-strong: oklch(84% 0.012 264);
+  --text: oklch(23% 0.02 264);
+  --text-muted: oklch(52% 0.017 264);
+  --text-subtle: oklch(64% 0.014 264);
+  --accent: oklch(53% 0.19 265);
+  --accent-hover: oklch(47% 0.19 265);
+  --accent-fg: oklch(100% 0 0);
+  --accent-soft: oklch(94% 0.04 265);
+  --accent-ring: oklch(53% 0.19 265 / 0.35);
+  --danger: oklch(55% 0.2 27);
+  --danger-soft: oklch(95% 0.03 27);
+  --shadow-card: 0 1px 2px oklch(0% 0 0 / 0.04), 0 1px 3px oklch(0% 0 0 / 0.06);
+  --shadow-pop: 0 8px 24px oklch(0% 0 0 / 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --canvas: oklch(17% 0.015 264);
+    --surface: oklch(21% 0.017 264);
+    --surface-raised: oklch(24% 0.018 264);
+    --surface-muted: oklch(26% 0.018 264);
+    --border: oklch(30% 0.018 264);
+    --border-strong: oklch(38% 0.02 264);
+    --text: oklch(95% 0.006 264);
+    --text-muted: oklch(72% 0.014 264);
+    --text-subtle: oklch(60% 0.014 264);
+    --accent: oklch(68% 0.16 265);
+    --accent-hover: oklch(74% 0.16 265);
+    --accent-fg: oklch(18% 0.02 264);
+    --accent-soft: oklch(30% 0.06 265);
+    --accent-ring: oklch(68% 0.16 265 / 0.4);
+    --danger: oklch(70% 0.16 27);
+    --danger-soft: oklch(30% 0.06 27);
+    --shadow-card: 0 1px 2px oklch(0% 0 0 / 0.3);
+    --shadow-pop: 0 8px 24px oklch(0% 0 0 / 0.45);
+  }
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  --shadow-card: var(--shadow-card);
+  --shadow-pop: var(--shadow-pop);
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    background-color: var(--canvas);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overscroll-behavior-y: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  /* Slim scrollbars keep the virtualised viewport from looking like a frame. */
+  .scrollbar-slim {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+  .scrollbar-slim::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  .scrollbar-slim::-webkit-scrollbar-thumb {
+    background-color: var(--border-strong);
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-clip: content-box;
+  }
+  .scrollbar-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
