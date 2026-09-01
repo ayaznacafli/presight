@@ -31,8 +31,7 @@ FROM node:${NODE_VERSION} AS runner
 ENV NODE_ENV=production
 WORKDIR /app
 
-RUN apk add --no-cache curl \
- && mkdir -p /app/data \
+RUN mkdir -p /app/data \
  && chown -R node:node /app
 
 COPY --from=prod-deps --chown=node:node /app/node_modules ./node_modules
@@ -48,7 +47,10 @@ ENV HOST=0.0.0.0 \
 EXPOSE 4000
 VOLUME ["/app/data"]
 
+# Node ships fetch, so the probe needs no curl/wget. That keeps `apk add` out
+# of the build entirely — it is the one step that needs network access the
+# base image cannot authenticate behind a TLS-inspecting proxy.
 HEALTHCHECK --interval=15s --timeout=3s --start-period=40s --retries=5 \
-  CMD curl -fsS http://127.0.0.1:4000/health || exit 1
+  CMD ["node", "-e", "fetch(`http://127.0.0.1:${process.env.PORT}/health`).then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
 
 CMD ["node", "dist/index.js"]

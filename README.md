@@ -36,6 +36,22 @@ Override the defaults without editing the compose file:
 SEED_USER_COUNT=100000 WEB_PORT=3000 docker compose up --build
 ```
 
+**If a port is already taken**, `docker compose up` fails with
+`bind: address already in use`. To have the busy port freed automatically:
+
+```bash
+npm run docker:up            # kills whatever holds :4000 / :8080, then starts
+```
+
+That runs [`scripts/compose-up.sh`](scripts/compose-up.sh), which SIGTERMs the
+listening process (escalating to SIGKILL after 5s) before handing off to
+`docker compose up --build`. It honours `API_PORT` / `WEB_PORT`, and it never
+touches a port held by Docker itself — compose recreates its own containers.
+
+Compose cannot do this on its own: it has no pre-start hook, and its containers
+run in a VM that cannot signal host processes. To keep the old behaviour and
+have the command fail on a conflict instead, use `npm run docker:up:keep-ports`.
+
 ### Option B — Local (Node ≥ 22.5)
 
 ```bash
