@@ -15,7 +15,8 @@
     "build": "npm --prefix server run build && npm --prefix client run build",
     "test": "npm --prefix server test",
     "typecheck": "npm --prefix server run typecheck && npm --prefix client run typecheck",
-    "docker:up": "docker compose up --build",
+    "docker:up": "./scripts/compose-up.sh --build",
+    "docker:up:keep-ports": "docker compose up --build",
     "docker:down": "docker compose down -v"
   },
   "devDependencies": {
